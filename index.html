@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nigeria – Puntos Pendientes & Acciones | EDICOM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #008751;
+            --primary-dark: #004d2c;
+            --accent: #0284c7;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success-bg: #f0fdf4;
+            --success-border: #bbf7d0;
+            --danger: #ef4444;
+            --radius: 10px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-main); padding: 30px 20px; line-height: 1.6; }
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        header {
+            background: var(--bg-card); padding: 24px 30px; border-radius: var(--radius);
+            box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; border-left: 6px solid var(--primary); border: 1px solid var(--border);
+        }
+        .header-title h1 { font-size: 22px; font-weight: 700; color: var(--primary-dark); margin-bottom: 4px; }
+        .header-title p { font-size: 14px; color: var(--text-muted); }
+        .header-logos { display: flex; gap: 8px; }
+        .logo-badge { font-weight: 600; font-size: 13px; padding: 8px 12px; border-radius: 6px; background: #f1f5f9; color: var(--primary-dark); border: 1px solid var(--border); }
+
+        .stats-card {
+            background: var(--bg-card); padding: 15px 20px; border-radius: var(--radius);
+            box-shadow: var(--shadow); border: 1px solid var(--border); margin-bottom: 20px;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
+        }
+        .stats-info { font-size: 14px; font-weight: 500; color: var(--text-muted); }
+        .stats-info strong { color: var(--text-main); }
+        .progress-bar-container { flex: 1; max-width: 300px; background: var(--border); border-radius: 10px; height: 10px; overflow: hidden; }
+        .progress-bar-fill { background: var(--primary); height: 100%; width: 0%; transition: width 0.3s ease; }
+
+        .toolbar { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+        .toolbar-group { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn-action {
+            background: var(--bg-card); border: 1px solid var(--border); padding: 8px 14px; border-radius: 6px;
+            font-size: 13px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; color: var(--text-main); box-shadow: var(--shadow);
+            transition: all 0.2s;
+        }
+        .btn-action:hover { background: #f1f5f9; border-color: var(--accent); color: var(--accent); }
+        .btn-action.primary-email { background: var(--primary); color: white; border-color: var(--primary); }
+        .btn-action.primary-email:hover { background: var(--primary-dark); color: white; }
+
+        .search-filter-wrapper {
+            background: var(--bg-card); padding: 15px 20px; border-radius: var(--radius);
+            box-shadow: var(--shadow); border: 1px solid var(--border); margin-bottom: 20px;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
+        }
+        .search-input { padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 13px; width: 260px; outline: none; }
+        .search-input:focus { border-color: var(--accent); }
+
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin: 25px 0 15px 0; }
+        .section-title { font-size: 18px; font-weight: 600; color: var(--primary-dark); }
+        .filters { display: flex; gap: 6px; flex-wrap: wrap; }
+        .filter-btn { background: var(--bg-card); border: 1px solid var(--border); padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; color: var(--text-muted); transition: all 0.2s; }
+        .filter-btn.active, .filter-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .task-list { display: flex; flex-direction: column; gap: 14px; }
+        .task-card { background: var(--bg-card); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+        .task-card.completed { background-color: var(--success-bg); border-color: var(--success-border); opacity: 0.9; }
+        .task-main { display: flex; align-items: flex-start; gap: 15px; }
+        .task-checkbox { width: 22px; height: 22px; cursor: pointer; accent-color: var(--primary); margin-top: 2px; }
+        .task-content { flex: 1; }
+        .task-header-line { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+        .task-title { font-size: 16px; font-weight: 600; color: var(--text-main); }
+        .task-card.completed .task-title { text-decoration: line-through; color: #475569; }
+        
+        .priority-badge { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; }
+        .priority-urgente { background: #fee2e2; color: #991b1b; }
+        .priority-normal { background: #fef3c7; color: #92400e; }
+        .priority-baja { background: #f1f5f9; color: #475569; }
+
+        .task-details { font-size: 14px; color: var(--text-muted); white-space: pre-line; margin-bottom: 15px; }
+        .task-meta-info { font-size: 12px; color: #94a3b8; margin-bottom: 10px; display: flex; gap: 15px; }
+
+        .task-footer { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--border); gap: 10px; }
+        .assignee-select, .priority-select, .date-input { padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border); background: #fff; font-size: 13px; color: var(--text-main); }
+        .assignee-select:focus, .priority-select:focus { border-color: var(--accent); }
+        
+        .btn-text { background: none; border: none; color: var(--accent); font-size: 13px; cursor: pointer; font-weight: 500; }
+        .btn-text:hover { text-decoration: underline; }
+        .btn-delete { background: none; border: none; color: var(--danger); font-size: 13px; cursor: pointer; }
+        .btn-delete:hover { text-decoration: underline; }
+        
+        /* Contenedor de Notas Múltiples */
+        .notes-container { margin-top: 15px; padding-top: 12px; border-top: 1px dashed var(--border); display: none; }
+        .notes-container.open { display: block; }
+        .notes-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+        .note-item { background: #f8fafc; border: 1px solid var(--border); padding: 8px 12px; border-radius: 6px; font-size: 13px; display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+        .note-text { flex: 1; word-break: break-word; white-space: pre-line; }
+        .note-delete { background: none; border: none; color: var(--danger); font-size: 12px; cursor: pointer; }
+        
+        .note-input-row { display: flex; gap: 8px; }
+        .notes-textarea { flex: 1; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 13px; background: #fff; outline: none; min-height: 45px; resize: vertical; }
+        .btn-add-note { background: var(--accent); color: white; border: none; padding: 0 14px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; }
+        .btn-add-note:hover { background: #02699c; }
+
+        .edit-input, .edit-textarea { width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 13px; background: #fff; outline: none; }
+        .edit-input { font-weight: 600; font-size: 15px; margin-bottom: 8px; }
+        .edit-textarea { min-height: 80px; margin-bottom: 10px; resize: vertical; }
+
+        .add-card { background: var(--bg-card); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); margin-top: 35px; border: 1px dashed var(--primary); }
+        .add-card h3 { font-size: 16px; color: var(--primary-dark); margin-bottom: 15px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 200px 200px; gap: 12px; margin-bottom: 12px; }
+        @media (max-width: 900px) { .form-grid { grid-template-columns: 1fr; } }
+        .form-control { width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 14px; background: #fff; outline: none; }
+        textarea.form-control { min-height: 80px; margin-bottom: 12px; resize: vertical; }
+        .btn-primary { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-secondary { background: var(--accent); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: 500; }
+
+        .summary-wrapper { background: var(--bg-card); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); overflow: hidden; margin-top: 15px; }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
+        th, td { padding: 12px 16px; border-bottom: 1px solid var(--border); }
+        th { background-color: #f1f5f9; color: var(--primary-dark); font-weight: 600; }
+        .tag-assignee { background: #e0f2fe; color: #0369a1; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .empty-state { text-align: center; color: var(--text-muted); font-style: italic; padding: 20px; }
+        .footer-actions { display: flex; justify-content: flex-end; margin-top: 25px; }
+        .btn-outline-danger { background: transparent; border: 1px solid var(--danger); color: var(--danger); padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all 0.2s; }
+        .btn-outline-danger:hover { background: var(--danger); color: white; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="header-title">
+            <h1>Nigeria – Puntos Pendientes & Acciones</h1>
+            <p>Control operativo, asignación y seguimiento de incidencias</p>
+        </div>
+        <div class="header-actions-right">
+            <div class="header-logos">
+                <div class="logo-badge">EDICOM</div>
+                <div class="logo-badge" style="border-color: var(--primary); color: var(--primary);">NRS NIGERIA</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="stats-card">
+        <div class="stats-info" id="stats-text">Progreso: 0 de 0 completadas (0%)</div>
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+    </div>
+
+    <!-- Barra de Herramientas -->
+    <div class="toolbar">
+        <div class="toolbar-group">
+            <button class="btn-action primary-email" onclick="sendEmailOutlook()">
+                ✉️ Enviar Actualización (Outlook)
+            </button>
+            <button class="btn-action" onclick="copyReportToClipboard()">
+                📋 Copiar Resumen
+            </button>
+        </div>
+        <div class="toolbar-group">
+            <button class="btn-action" onclick="importSyncCode()" style="border-color: var(--accent); color: var(--accent);">
+                📥 Cargar Código de Email
+            </button>
+            <button class="btn-action" onclick="exportDataJSON()" style="border-color: var(--primary); color: var(--primary);">
+                💾 Exportar JSON
+            </button>
+            <button class="btn-action" onclick="document.getElementById('import-file').click()">
+                📂 Importar JSON
+            </button>
+            <input type="file" id="import-file" style="display: none" accept=".json" onchange="importDataJSON(event)">
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="search-filter-wrapper">
+        <div class="filters">
+            <button class="filter-btn active" onclick="setFilter('all', this)">Todas</button>
+            <button class="filter-btn" onclick="setFilter('aitor', this)">Aitor</button>
+            <button class="filter-btn" onclick="setFilter('soukaina', this)">Soukaina</button>
+            <button class="filter-btn" onclick="setFilter('unassigned', this)">Sin asignar</button>
+            <button class="filter-btn" onclick="setFilter('urgente', this)">🚨 Urgentes</button>
+        </div>
+        <div>
+            <input type="text" id="search-box" class="search-input" placeholder="🔍 Buscar título o detalles..." oninput="render()">
+        </div>
+    </div>
+
+    <div class="task-list" id="task-container">
+        <!-- Renderizado dinámico -->
+    </div>
+
+    <!-- Formulario Nueva Tarea -->
+    <div class="add-card">
+        <h3>➕ Añadir Nuevo Punto Pendiente</h3>
+        <div class="form-grid">
+            <input type="text" id="new-title" class="form-control" placeholder="Título del punto o tarea...">
+            <select id="new-assignee" class="form-control">
+                <option value="Sin asignar">Sin asignar</option>
+                <option value="Aitor">Aitor</option>
+                <option value="Soukaina">Soukaina</option>
+            </select>
+            <select id="new-priority" class="form-control">
+                <option value="normal">Normal</option>
+                <option value="urgente">Urgente</option>
+                <option value="baja">Baja</option>
+            </select>
+        </div>
+        <textarea id="new-details" class="form-control" placeholder="Detalles o descripción del punto..."></textarea>
+        <button class="btn-primary" onclick="addNewTask()">Guardar Nuevo Punto</button>
+    </div>
+
+    <div class="section-header" style="margin-top: 40px;">
+        <h2 class="section-title">✅ Resumen de Tareas Realizadas</h2>
+    </div>
+    <div class="summary-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50px;">#</th>
+                    <th>Título del Punto</th>
+                    <th style="width: 140px;">Asignado a</th>
+                    <th>Notas / Enlaces (Bug Tracking)</th>
+                </tr>
+            </thead>
+            <tbody id="summary-tbody">
+                <!-- Renderizado dinámico -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-actions">
+        <button class="btn-outline-danger" onclick="resetData()">Restaurar datos iniciales</button>
+    </div>
+</div>
+
+<script>
+    const initialTasks = [
+        { id: 1, title: "1. Despliegue – Error técnico de criptografía (409)", details: "- Planificar el despliegue para el próximo lunes con la corrección del error técnico de criptografía (409).\n- Modificar el comportamiento del proceso de confirmación (Confirm): cuando se produzca este error, debe devolver un error para que el proceso de criptografía pueda reintentar el envío de la factura.", assignee: "Sin asignar", priority: "urgente", dueDate: "", notes: [], completed: false },
+        { id: 2, title: "2. Almacenamiento permanente de los logs de criptografía", details: "- Actualmente, los logs de criptografía se almacenan en META_CRIPTO_LOG, que se elimina cuando el cliente utiliza el volumen.\n- Configurar META_ATTACHMENTS a nivel de LTA para guardar logs como documentos permanentes.", assignee: "Sin asignar", priority: "normal", dueDate: "", notes: [], completed: false },
+        { id: 3, title: "3. Configuración del dominio", details: "- Configurar tanto LTA como volumen en el dominio correspondiente.", assignee: "Sin asignar", priority: "normal", dueDate: "", notes: [], completed: false },
+        { id: 4, title: "4. Actualización del procedimiento de Nigeria", details: "Actualizar la documentación del procedimiento para incluir:\n- Pasos de configuración de LTA.\n- Lógica B2C y notas de crédito / pagos parciales.", assignee: "Sin asignar", priority: "baja", dueDate: "", notes: [], completed: false },
+        { id: 5, title: "5. Mapping Layout – Equipo de Assets", details: "- Preparar el Mapping Layout y explicar claramente la lógica, B2C y campos LGA, State y Country.", assignee: "Sin asignar", priority: "normal", dueDate: "", notes: [], completed: false },
+        { id: 6, title: "6. Funcionalidades adicionales – I+D", details: "- Solicitar a I+D la implementación para los campos: LGA, State y Country.", assignee: "Sin asignar", priority: "normal", dueDate: "", notes: [], completed: false },
+        { id: 7, title: "7. Pantalla – Listas de valores", details: "- Añadir listas de valores disponibles para LGA, State y Country.", assignee: "Sin asignar", priority: "baja", dueDate: "", notes: [], completed: false },
+        { id: 8, title: "8. Mailbox", details: "- Revisar y dar seguimiento al punto pendiente relacionado con Mailbox.", assignee: "Sin asignar", priority: "normal", dueDate: "", notes: [], completed: false },
+        { id: 9, title: "9. Bug Tracking", details: "- Dar seguimiento al ticket: JCons – BugTracking [111892].", assignee: "Sin asignar", priority: "urgente", dueDate: "", notes: [], completed: false }
+    ];
+
+    let tasks = JSON.parse(localStorage.getItem('nigeria_local_tasks_v10')) || initialTasks;
+    // Asegurar compatibilidad si algún objeto viejo guardaba 'notes' como string
+    tasks.forEach(t => { if (!Array.isArray(t.notes)) t.notes = t.notes ? [t.notes] : []; });
+
+    let currentFilter = 'all';
+
+    function save() {
+        localStorage.setItem('nigeria_local_tasks_v10', JSON.stringify(tasks));
+    }
+
+    function exportDataJSON() {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tasks, null, 2));
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", `nigeria-backup-${new Date().toISOString().slice(0,10)}.json`);
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+        alert('¡Archivo JSON exportado con éxito!');
+    }
+
+    function importDataJSON(event) {
+        const fileReader = new FileReader();
+        if (event.target.files[0]) {
+            fileReader.readAsText(event.target.files[0], "UTF-8");
+            fileReader.onload = function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if (Array.isArray(parsed)) {
+                        parsed.forEach(t => { if (!Array.isArray(t.notes)) t.notes = t.notes ? [t.notes] : []; });
+                        tasks = parsed;
+                        save();
+                        render();
+                        alert('¡Datos importados y sincronizados con éxito!');
+                    } else {
+                        alert('El archivo JSON no tiene el formato correcto.');
+                    }
+                } catch (err) {
+                    alert('Error al leer el archivo JSON.');
+                }
+            };
+        }
+    }
+
+    function getSyncCode() {
+        return btoa(encodeURIComponent(JSON.stringify(tasks)));
+    }
+
+    function importSyncCode() {
+        let code = prompt("Pega aquí el código de respaldo que te ha enviado tu compañero/a por correo:");
+        if (code && code.trim() !== "") {
+            try {
+                let cleanCode = code.trim().replace(/<\/?[^>]+(>|$)/g, "");
+                const decodedJson = decodeURIComponent(atob(cleanCode));
+                const parsed = JSON.parse(decodedJson);
+                if (Array.isArray(parsed)) {
+                    parsed.forEach(t => { if (!Array.isArray(t.notes)) t.notes = t.notes ? [t.notes] : []; });
+                    tasks = parsed;
+                    save();
+                    render();
+                    alert('¡Sincronización completada con éxito!');
+                } else {
+                    alert('El código no es válido.');
+                }
+            } catch (err) {
+                alert('El código introducido es incorrecto o está corrupto.');
+            }
+        }
+    }
+
+    function setFilter(filter, btn) {
+        currentFilter = filter;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        render();
+    }
+
+    function render() {
+        const container = document.getElementById('task-container');
+        const summaryTbody = document.getElementById('summary-tbody');
+        const searchQuery = document.getElementById('search-box').value.toLowerCase();
+        
+        container.innerHTML = '';
+        summaryTbody.innerHTML = '';
+
+        let filteredTasks = tasks.filter(t => {
+            const matchesSearch = t.title.toLowerCase().includes(searchQuery) || t.details.toLowerCase().includes(searchQuery);
+            if (!matchesSearch) return false;
+
+            if (currentFilter === 'aitor') return t.assignee.toLowerCase() === 'aitor';
+            if (currentFilter === 'soukaina') return t.assignee.toLowerCase() === 'soukaina';
+            if (currentFilter === 'unassigned') return t.assignee === 'Sin asignar';
+            if (currentFilter === 'urgente') return t.priority === 'urgente';
+            return true;
+        });
+
+        const completedTotal = tasks.filter(t => t.completed).length;
+        const percent = tasks.length > 0 ? Math.round((completedTotal / tasks.length) * 100) : 0;
+        document.getElementById('stats-text').innerHTML = `Progreso: <strong>${completedTotal} de ${tasks.length}</strong> completadas (${percent}%)`;
+        document.getElementById('progress-fill').style.width = `${percent}%`;
+
+        let completedCount = 0;
+
+        filteredTasks.forEach(task => {
+            const card = document.createElement('div');
+            card.className = `task-card ${task.completed ? 'completed' : ''}`;
+            card.id = `card-${task.id}`;
+            const priorityText = (task.priority || 'normal').toUpperCase();
+
+            // Renderizar lista de notas de la tarea
+            let notesHtml = '';
+            if (task.notes && task.notes.length > 0) {
+                task.notes.forEach((note, noteIndex) => {
+                    notesHtml += `
+                        <div class="note-item">
+                            <div class="note-text">• ${escapeHtml(note)}</div>
+                            <button class="note-delete" onclick="deleteNote(${task.id}, ${noteIndex})" title="Eliminar nota">🗑️</button>
+                        </div>
+                    `;
+                });
+            } else {
+                notesHtml = `<div style="font-size:12px; color:var(--text-muted); font-style:italic; margin-bottom:8px;">No hay notas añadidas todavía.</div>`;
+            }
+
+            card.innerHTML = `
+                <div class="task-main">
+                    <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} onchange="toggleComplete(${task.id})">
+                    <div class="task-content" id="content-${task.id}">
+                        <div class="task-header-line">
+                            <div class="task-title">${task.title}</div>
+                            <span class="priority-badge priority-${task.priority || 'normal'}">${priorityText}</span>
+                        </div>
+                        <div class="task-details">${task.details}</div>
+                        <div class="task-meta-info">
+                            <span>📅 Fecha límite: <input type="date" class="date-input" value="${task.dueDate || ''}" onchange="updateDueDate(${task.id}, this.value)" style="padding:2px 6px; font-size:12px;"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-footer">
+                    <div class="assignee-box">
+                        <span>Asignado:</span>
+                        <select class="assignee-select" onchange="updateAssignee(${task.id}, this.value)">
+                            <option value="Sin asignar" ${task.assignee === 'Sin asignar' ? 'selected' : ''}>Sin asignar</option>
+                            <option value="Aitor" ${task.assignee === 'Aitor' ? 'selected' : ''}>Aitor</option>
+                            <option value="Soukaina" ${task.assignee === 'Soukaina' ? 'selected' : ''}>Soukaina</option>
+                        </select>
+                        <select class="priority-select" onchange="updatePriority(${task.id}, this.value)" style="margin-left: 5px;">
+                            <option value="normal" ${task.priority === 'normal' ? 'selected' : ''}>Normal</option>
+                            <option value="urgente" ${task.priority === 'urgente' ? 'selected' : ''}>Urgente</option>
+                            <option value="baja" ${task.priority === 'baja' ? 'selected' : ''}>Baja</option>
+                        </select>
+                    </div>
+                    <div style="display:flex; gap: 15px; align-items: center;">
+                        <button class="btn-text" onclick="toggleNotes(${task.id})">💬 ${task.notes.length > 0 ? `Ver Notas (${task.notes.length})` : 'Añadir Notas'}</button>
+                        <button class="btn-text" onclick="toggleEdit(${task.id})">✏️ Editar</button>
+                        <button class="btn-delete" onclick="deleteTask(${task.id})">🗑️ Eliminar</button>
+                    </div>
+                </div>
+                <div class="notes-container ${task.notes.length > 0 ? 'open' : ''}" id="notes-${task.id}">
+                    <div class="notes-list">${notesHtml}</div>
+                    <div class="note-input-row">
+                        <textarea class="notes-textarea" id="new-note-text-${task.id}" placeholder="Escribe una nueva nota o enlace..."></textarea>
+                        <button class="btn-add-note" onclick="addNote(${task.id})">➕ Guardar Nota</button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+        if (filteredTasks.length === 0) {
+            container.innerHTML = `<div class="empty-state">No hay tareas que mostrar con los filtros actuales.</div>`;
+        }
+
+        tasks.filter(t => t.completed).forEach((task) => {
+            completedCount++;
+            const notesSummary = task.notes.length > 0 ? task.notes.map(n => `• ${n}`).join('<br>') : '<span style="color:#94a3b8;">Sin notas</span>';
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${completedCount}</td>
+                <td><strong>${task.title}</strong></td>
+                <td><span class="tag-assignee">${task.assignee}</span></td>
+                <td>${notesSummary}</td>
+            `;
+            summaryTbody.appendChild(tr);
+        });
+
+        if (completedCount === 0) {
+            summaryTbody.innerHTML = `<tr><td colspan="4" class="empty-state">Todavía no hay tareas completadas.</td></tr>`;
+        }
+    }
+
+    function addNote(id) {
+        const t = tasks.find(x => x.id === id);
+        const textarea = document.getElementById(`new-note-text-${id}`);
+        if (!t || !textarea) return;
+
+        const noteText = textarea.value.trim();
+        if (!noteText) {
+            alert('La nota no puede estar vacía.');
+            return;
+        }
+
+        t.notes.push(noteText);
+        save();
+        render();
+        // Mantener abierto el contenedor de notas de esta tarea específica
+        document.getElementById(`notes-${id}`).classList.add('open');
+    }
+
+    function deleteNote(taskId, noteIndex) {
+        const t = tasks.find(x => x.id === taskId);
+        if (t && t.notes) {
+            t.notes.splice(noteIndex, 1);
+            save();
+            render();
+            document.getElementById(`notes-${taskId}`).classList.add('open');
+        }
+    }
+
+    function toggleEdit(id) {
+        const t = tasks.find(x => x.id === id);
+        const contentDiv = document.getElementById(`content-${id}`);
+        if (!t || !contentDiv) return;
+
+        contentDiv.innerHTML = `
+            <input type="text" id="edit-title-${id}" class="edit-input" value="${t.title.replace(/"/g, '&quot;')}">
+            <textarea id="edit-details-${id}" class="edit-textarea">${t.details}</textarea>
+            <div style="display: flex; gap: 10px; margin-bottom: 5px;">
+                <button class="btn-secondary" onclick="saveEdit(${id})">💾 Guardar Cambios</button>
+                <button class="btn-action" onclick="render()" style="padding: 6px 12px; font-size: 12px;">Cancelar</button>
+            </div>
+        `;
+    }
+
+    function saveEdit(id) {
+        const t = tasks.find(x => x.id === id);
+        if (!t) return;
+
+        const newTitle = document.getElementById(`edit-title-${id}`).value.trim();
+        const newDetails = document.getElementById(`edit-details-${id}`).value.trim();
+
+        if (!newTitle) {
+            alert('El título no puede estar vacío.');
+            return;
+        }
+
+        t.title = newTitle;
+        t.details = newDetails;
+        save();
+        render();
+    }
+
+    function toggleComplete(id) {
+        const t = tasks.find(x => x.id === id);
+        if (t) {
+            t.completed = !t.completed;
+            save();
+            render();
+        }
+    }
+
+    function updateAssignee(id, val) {
+        const t = tasks.find(x => x.id === id);
+        if (t) { t.assignee = val; save(); }
+    }
+
+    function updatePriority(id, val) {
+        const t = tasks.find(x => x.id === id);
+        if (t) { t.priority = val; save(); }
+    }
+
+    function updateDueDate(id, val) {
+        const t = tasks.find(x => x.id === id);
+        if (t) { t.dueDate = val; save(); }
+    }
+
+    function toggleNotes(id) {
+        document.getElementById(`notes-${id}`).classList.toggle('open');
+    }
+
+    function deleteTask(id) {
+        if (confirm('¿Estás seguro de que deseas eliminar este punto?')) {
+            tasks = tasks.filter(x => x.id !== id);
+            save();
+            render();
+        }
+    }
+
+    function addNewTask() {
+        const titleInput = document.getElementById('new-title');
+        const detailsInput = document.getElementById('new-details');
+        const assigneeSelect = document.getElementById('new-assignee');
+        const prioritySelect = document.getElementById('new-priority');
+
+        if (!titleInput.value.trim()) {
+            alert('Por favor, indica un título para la nueva tarea.');
+            return;
+        }
+
+        tasks.push({
+            id: Date.now(),
+            title: titleInput.value.trim(),
+            details: detailsInput.value.trim() || 'Sin descripción adicional.',
+            assignee: assigneeSelect.value,
+            priority: prioritySelect.value,
+            dueDate: '',
+            notes: [],
+            completed: false
+        });
+
+        save();
+        titleInput.value = '';
+        detailsInput.value = '';
+        assigneeSelect.value = 'Sin asignar';
+        prioritySelect.value = 'normal';
+        render();
+    }
+
+    function generateReportText() {
+        let report = "ESTADO DE PUNTOS PENDIENTES - NIGERIA (EDICOM)\n==============================================\n\n";
+        let pending = tasks.filter(t => !t.completed);
+        let completed = tasks.filter(t => t.completed);
+
+        report += `--- TAREAS PENDIENTES (${pending.length}) ---\n`;
+        pending.forEach((t, i) => {
+            report += `${i + 1}. [${t.priority.toUpperCase()}] [${t.assignee.toUpperCase()}] ${t.title}\n`;
+            if(t.dueDate) report += `    Fecha límite: ${t.dueDate}\n`;
+            if(t.notes && t.notes.length > 0) {
+                t.notes.forEach(n => report += `    - Nota: ${n}\n`);
+            }
+        });
+
+        report += `\n--- TAREAS COMPLETADAS (${completed.length}) ---\n`;
+        completed.forEach((t, i) => {
+            report += `${i + 1}. [COMPLETADA] ${t.title} (${t.assignee})\n`;
+        });
+
+        report += "\n\n==============================================\n";
+        report += "[CÓDIGO DE RESPALDO PARA SINCRONIZAR]\n";
+        report += getSyncCode() + "\n";
+        report += "==============================================\n";
+        return report;
+    }
+
+    function copyReportToClipboard() {
+        navigator.clipboard.writeText(generateReportText()).then(() => alert('¡Resumen copiado al portapapeles con éxito!'));
+    }
+
+    function sendEmailOutlook() {
+        const recipients = "schatry@edicomgroup.com,aimartinez@edicomgroup.com";
+        const subject = encodeURIComponent("Actualización Puntos Pendientes - Nigeria (EDICOM)");
+        const bodyText = generateReportText();
+        const body = encodeURIComponent(bodyText);
+        window.location.href = `mailto:${recipients}?subject=${subject}&body=${body}`;
+    }
+
+    function resetData() {
+        if (confirm('¿Restablecer datos originales? Perderás los cambios locales no guardados.')) {
+            localStorage.removeItem('nigeria_local_tasks_v10');
+            tasks = JSON.parse(JSON.stringify(initialTasks));
+            render();
+        }
+    }
+
+    function escapeHtml(text) {
+        return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;").replace(/\n/g, "<br>");
+    }
+
+    render();
+</script>
+
+</body>
+</html>
